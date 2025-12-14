@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\Expense;
 use BackedEnum;
 use Filament\Forms\Components\DatePicker;
+use UnitEnum;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
@@ -26,7 +27,9 @@ class ExpenseByDateStats extends Page implements HasTable, HasForms
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chart-pie';
 
-    protected static ?int $navigationSort = 11;
+    protected static string|UnitEnum|null $navigationGroup = 'Thống kê';
+
+    protected static ?int $navigationSort = 2;
 
     protected string $view = 'filament.pages.expense-by-date-stats';
 
@@ -97,21 +100,28 @@ class ExpenseByDateStats extends Page implements HasTable, HasForms
                     ->state(function ($record) {
                         return $this->getMonthlyTotal($record);
                     }),
-                TextColumn::make('selected_period_total')
-                    ->label('Ngày chọn')
-                    ->formatStateUsing(function ($state) {
-                        return $state === '-' ? '-' : number_format($state, 0, ',', '.') . ' ₫';
-                    })
-                    ->state(function ($record) {
-                        return $this->getSelectedPeriodTotal($record);
-                    }),
             ]);
     }
 
     protected function getTableQuery(): Builder
     {
-        return Expense::query()
-            ->selectRaw('DATE(recorded_at) as date, MIN(recorded_at) as recorded_at, MIN(id) as id')
+        $query = Expense::query()
+            ->selectRaw('DATE(recorded_at) as date, MIN(recorded_at) as recorded_at, MIN(id) as id');
+
+        // Filter by date range if provided
+        if ($this->startDate && $this->endDate) {
+            $start = Carbon::parse($this->startDate)->startOfDay();
+            $end = Carbon::parse($this->endDate)->endOfDay();
+            $query->whereBetween('recorded_at', [$start, $end]);
+        } elseif ($this->startDate) {
+            $start = Carbon::parse($this->startDate)->startOfDay();
+            $query->where('recorded_at', '>=', $start);
+        } elseif ($this->endDate) {
+            $end = Carbon::parse($this->endDate)->endOfDay();
+            $query->where('recorded_at', '<=', $end);
+        }
+
+        return $query
             ->groupByRaw('DATE(recorded_at)')
             ->orderByRaw('DATE(recorded_at) DESC');
     }
@@ -142,23 +152,5 @@ class ExpenseByDateStats extends Page implements HasTable, HasForms
 
         return Expense::whereBetween('recorded_at', [$startOfMonth, $endOfMonth])
             ->sum('amount');
-    }
-
-    protected function getSelectedPeriodTotal($record): float|string
-    {
-        if (!$this->startDate || !$this->endDate) {
-            return '-';
-        }
-
-        $start = Carbon::parse($this->startDate)->startOfDay();
-        $end = Carbon::parse($this->endDate)->endOfDay();
-        $date = Carbon::parse($record->date ?? $record->recorded_at);
-
-        if ($date->between($start, $end)) {
-            return Expense::whereDate('recorded_at', $date->format('Y-m-d'))
-                ->sum('amount');
-        }
-
-        return 0;
     }
 }

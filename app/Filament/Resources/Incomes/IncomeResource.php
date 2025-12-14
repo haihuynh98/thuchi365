@@ -12,6 +12,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class IncomeResource extends Resource
 {
@@ -24,6 +25,10 @@ class IncomeResource extends Resource
     protected static ?string $pluralModelLabel = 'Thu';
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-arrow-trending-up';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Giao dịch';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

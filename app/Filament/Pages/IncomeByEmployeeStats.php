@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Income;
 use BackedEnum;
 use Filament\Forms\Components\DatePicker;
+use UnitEnum;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
@@ -27,7 +28,9 @@ class IncomeByEmployeeStats extends Page implements HasTable, HasForms
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chart-bar';
 
-    protected static ?int $navigationSort = 10;
+    protected static string|UnitEnum|null $navigationGroup = 'Thống kê';
+
+    protected static ?int $navigationSort = 1;
 
     protected string $view = 'filament.pages.income-by-employee-stats';
 
@@ -73,10 +76,9 @@ class IncomeByEmployeeStats extends Page implements HasTable, HasForms
         return $table
             ->query($this->getTableQuery())
             ->columns([
-                TextColumn::make('employee.name')
+                TextColumn::make('name')
                     ->label('Nhân viên')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 TextColumn::make('daily_total')
                     ->label('Ngày')
                     ->money('VND')
@@ -103,8 +105,7 @@ class IncomeByEmployeeStats extends Page implements HasTable, HasForms
                     ->state(function ($record) {
                         return $this->getSelectedPeriodTotal($record);
                     }),
-            ])
-            ->defaultSort('employee.name');
+            ]);
     }
 
     protected function getTableQuery(): Builder

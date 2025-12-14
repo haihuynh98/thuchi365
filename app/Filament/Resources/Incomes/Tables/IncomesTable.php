@@ -33,11 +33,21 @@ class IncomesTable
                     ->label('Phạt')
                     ->money('VND')
                     ->sortable(),
+                TextColumn::make('facility')
+                    ->label('CSVC')
+                    ->money('VND')
+                    ->sortable(),
                 TextColumn::make('total')
                     ->label('Tổng thu')
                     ->money('VND')
                     ->sortable()
                     ->state(fn ($record) => $record->total),
+                TextColumn::make('note')
+                    ->label('Ghi chú')
+                    ->limit(100)
+                    ->tooltip(fn ($record) => $record->note)
+                    ->wrap(false)
+                    ->searchable(),
                 TextColumn::make('recorded_at')
                     ->label('Ngày ghi nhận')
                     ->date('d/m/Y')
@@ -46,17 +56,17 @@ class IncomesTable
                     ->label('Người tạo')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updater.name')
                     ->label('Người cập nhật')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Ngày tạo')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label('Ngày cập nhật')
                     ->dateTime('d/m/Y H:i')

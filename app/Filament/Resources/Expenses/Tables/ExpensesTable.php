@@ -21,8 +21,10 @@ class ExpensesTable
                     ->sortable(),
                 TextColumn::make('note')
                     ->label('Ghi chú')
-                    ->limit(50)
-                    ->tooltip(fn ($record) => $record->note),
+                    ->limit(100)
+                    ->tooltip(fn ($record) => $record->note)
+                    ->wrap(false)
+                    ->searchable(),
                 TextColumn::make('recorded_at')
                     ->label('Ngày ghi nhận')
                     ->date('d/m/Y')
@@ -31,17 +33,17 @@ class ExpensesTable
                     ->label('Người tạo')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updater.name')
                     ->label('Người cập nhật')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Ngày tạo')
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label('Ngày cập nhật')
                     ->dateTime('d/m/Y H:i')
