@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('audit_logs', function (Blueprint $table) {
+            $table->id();
+            $table->string('auditable_type'); // App\Models\Income hoặc App\Models\Expense
+            $table->unsignedBigInteger('auditable_id'); // ID của record
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->string('action'); // created, updated, deleted
+            $table->json('old_values')->nullable(); // Giá trị cũ
+            $table->json('new_values')->nullable(); // Giá trị mới
+            $table->string('ip_address')->nullable();
+            $table->text('user_agent')->nullable();
+            $table->timestamps();
+
+            $table->index(['auditable_type', 'auditable_id']);
+            $table->index('user_id');
+            $table->index('action');
+            $table->index('created_at');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('audit_logs');
+    }
+};

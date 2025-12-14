@@ -1,0 +1,36 @@
+# ThuChi365 - Laravel + Filament v4
+
+## Framework & Tools
+- Laravel latest LTS
+- Filament v4.1+
+- Spatie Laravel Permission
+- PHP 8.2+
+
+## Code Style
+- PSR-12
+- Use type hints
+- Vietnamese labels for UI
+- English for code/comments
+
+## Database
+- Use migrations
+- Index important columns
+- Use decimal(15,2) for money
+- Timezone: Asia/Ho_Chi_Minh
+
+## Filament
+- Use Filament v4 syntax
+- Resources in app/Filament/Resources
+- Policies for permissions
+- Vietnamese labels
+
+## Permissions
+- Admin: full access
+- Manager: limited (same day only)
+- Employee: create income, view own stats
+
+## Naming
+- Models: singular (Employee, Income, Expense)
+- Tables: plural (employees, incomes, expenses)
+- Vietnamese for user-facing text
+
