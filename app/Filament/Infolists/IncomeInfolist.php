@@ -19,9 +19,6 @@ class IncomeInfolist
                         TextEntry::make('revenue')
                             ->label('Doanh thu (vé)')
                             ->money('VND'),
-                        TextEntry::make('tip')
-                            ->label('Tiền tip')
-                            ->money('VND'),
                         TextEntry::make('penalty')
                             ->label('Tiền phạt')
                             ->money('VND'),
