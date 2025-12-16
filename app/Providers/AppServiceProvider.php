@@ -33,6 +33,15 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Income::class, IncomePolicy::class);
         Gate::policy(Expense::class, ExpensePolicy::class);
 
+        // Bypass Shield authorization cho Dashboard - cho phép tất cả user đã đăng nhập
+        Gate::before(function ($user, $ability) {
+            // Nếu là view Dashboard, cho phép tất cả user đã đăng nhập
+            if ($ability === 'view_dashboard' || $ability === 'view_App\\Filament\\Pages\\Dashboard') {
+                return true;
+            }
+            return null;
+        });
+
         // Register observers
         Income::observe(IncomeObserver::class);
         Expense::observe(ExpenseObserver::class);
