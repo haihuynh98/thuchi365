@@ -193,7 +193,7 @@ return [
         'subject' => 'class',
         'prefix' => 'view',
         'exclude' => [
-            // Không exclude Dashboard để user có thể truy cập
+            'Dashboard',
         ],
     ],
 
