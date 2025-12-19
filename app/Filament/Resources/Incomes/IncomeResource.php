@@ -8,10 +8,12 @@ use App\Filament\Resources\Incomes\Pages\ListIncomes;
 use App\Filament\Resources\Incomes\Schemas\IncomeForm;
 use App\Filament\Resources\Incomes\Tables\IncomesTable;
 use App\Models\Income;
+use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class IncomeResource extends Resource
@@ -58,6 +60,17 @@ class IncomeResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasPermissionTo('ViewAny:Income') || auth()->user()?->hasRole('admin');
+        $user = Auth::user();
+        
+        if (!$user instanceof User) {
+            return false;
+        }
+        
+        try {
+            return $user->hasPermissionTo('ViewAny:Income') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            // Permission chưa được tạo, chỉ admin mới có quyền
+            return $user->hasRole('admin');
+        }
     }
 }

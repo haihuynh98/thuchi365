@@ -169,7 +169,11 @@ class IncomeByEmployeeStats extends Page implements HasTable, HasForms
             return false;
         }
         
-        return $user->hasPermissionTo('View:IncomeByEmployeeStats') || $user->hasRole('admin');
+        try {
+            return $user->hasPermissionTo('View:IncomeByEmployeeStats') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return $user->hasRole('admin');
+        }
     }
 
     public static function shouldRegisterNavigation(): bool
@@ -180,6 +184,10 @@ class IncomeByEmployeeStats extends Page implements HasTable, HasForms
             return false;
         }
         
-        return $user->hasPermissionTo('View:IncomeByEmployeeStats') || $user->hasRole('admin');
+        try {
+            return $user->hasPermissionTo('View:IncomeByEmployeeStats') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return $user->hasRole('admin');
+        }
     }
 }

@@ -10,7 +10,15 @@ class IncomePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('ViewAny:Income') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('ViewAny:Income');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     public function view(User $user, Income $income): bool
@@ -19,7 +27,11 @@ class IncomePolicy
             return true;
         }
         
-        if (!$user->hasPermissionTo('View:Income')) {
+        try {
+            if (!$user->hasPermissionTo('View:Income')) {
+                return false;
+            }
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
             return false;
         }
         
@@ -33,7 +45,15 @@ class IncomePolicy
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('Create:Income') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('Create:Income');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     public function update(User $user, Income $income): bool
@@ -42,7 +62,11 @@ class IncomePolicy
             return true;
         }
         
-        if (!$user->hasPermissionTo('Update:Income')) {
+        try {
+            if (!$user->hasPermissionTo('Update:Income')) {
+                return false;
+            }
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
             return false;
         }
         
@@ -60,7 +84,11 @@ class IncomePolicy
             return true;
         }
         
-        if (!$user->hasPermissionTo('Delete:Income')) {
+        try {
+            if (!$user->hasPermissionTo('Delete:Income')) {
+                return false;
+            }
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
             return false;
         }
         

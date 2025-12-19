@@ -9,6 +9,7 @@ use App\Filament\Resources\Roles\Pages\CreateRole;
 use App\Filament\Resources\Roles\Pages\EditRole;
 use App\Filament\Resources\Roles\Pages\ListRoles;
 use App\Filament\Resources\Roles\Pages\ViewRole;
+use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use BezhanSalleh\FilamentShield\Traits\HasShieldFormComponents;
 use BezhanSalleh\PluginEssentials\Concerns\Resource as Essentials;
@@ -26,6 +27,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
 
@@ -165,13 +167,17 @@ class RoleResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = auth()->user();
+        $user = Auth::user();
         
-        if (!$user) {
+        if (!$user instanceof User) {
             return false;
         }
         
-        // Check if user has permission to view any role
-        return $user->hasPermissionTo('ViewAny:Role') || $user->hasRole('admin');
+        try {
+            return $user->hasPermissionTo('ViewAny:Role') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            // Permission chưa được tạo, chỉ admin mới có quyền
+            return $user->hasRole('admin');
+        }
     }
 }

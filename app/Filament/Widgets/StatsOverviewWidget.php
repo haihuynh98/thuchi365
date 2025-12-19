@@ -20,7 +20,11 @@ class StatsOverviewWidget extends BaseStatsOverviewWidget
             return false;
         }
         
-        return $user->hasPermissionTo('View:StatsOverviewWidget') || $user->hasRole('admin');
+        try {
+            return $user->hasPermissionTo('View:StatsOverviewWidget') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return $user->hasRole('admin');
+        }
     }
 
     protected function getStats(): array

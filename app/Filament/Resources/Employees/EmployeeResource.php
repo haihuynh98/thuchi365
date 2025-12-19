@@ -8,10 +8,12 @@ use App\Filament\Resources\Employees\Pages\ListEmployees;
 use App\Filament\Resources\Employees\Schemas\EmployeeForm;
 use App\Filament\Resources\Employees\Tables\EmployeesTable;
 use App\Models\Employee;
+use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class EmployeeResource extends Resource
@@ -58,6 +60,17 @@ class EmployeeResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasPermissionTo('ViewAny:Employee') || auth()->user()?->hasRole('admin');
+        $user = Auth::user();
+        
+        if (!$user instanceof User) {
+            return false;
+        }
+        
+        try {
+            return $user->hasPermissionTo('ViewAny:Employee') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            // Permission chưa được tạo, chỉ admin mới có quyền
+            return $user->hasRole('admin');
+        }
     }
 }

@@ -12,6 +12,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class UserResource extends Resource
@@ -70,6 +71,17 @@ class UserResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasPermissionTo('ViewAny:User') || auth()->user()?->hasRole('admin');
+        $user = Auth::user();
+        
+        if (!$user instanceof User) {
+            return false;
+        }
+        
+        try {
+            return $user->hasPermissionTo('ViewAny:User') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            // Permission chưa được tạo, chỉ admin mới có quyền
+            return $user->hasRole('admin');
+        }
     }
 }

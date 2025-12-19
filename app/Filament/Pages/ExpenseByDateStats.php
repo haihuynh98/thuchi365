@@ -163,7 +163,11 @@ class ExpenseByDateStats extends Page implements HasTable, HasForms
             return false;
         }
         
-        return $user->hasPermissionTo('View:ExpenseByDateStats') || $user->hasRole('admin');
+        try {
+            return $user->hasPermissionTo('View:ExpenseByDateStats') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return $user->hasRole('admin');
+        }
     }
 
     public static function shouldRegisterNavigation(): bool
@@ -174,6 +178,10 @@ class ExpenseByDateStats extends Page implements HasTable, HasForms
             return false;
         }
         
-        return $user->hasPermissionTo('View:ExpenseByDateStats') || $user->hasRole('admin');
+        try {
+            return $user->hasPermissionTo('View:ExpenseByDateStats') || $user->hasRole('admin');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return $user->hasRole('admin');
+        }
     }
 }

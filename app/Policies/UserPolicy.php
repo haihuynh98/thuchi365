@@ -11,7 +11,15 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('ViewAny:User') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('ViewAny:User');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     /**
@@ -19,7 +27,15 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('View:User') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('View:User');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     /**
@@ -27,7 +43,15 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('Create:User') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('Create:User');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     /**
@@ -35,7 +59,15 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('Update:User') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('Update:User');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     /**
@@ -43,7 +75,15 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->hasPermissionTo('Delete:User') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('Delete:User');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     /**
@@ -51,7 +91,15 @@ class UserPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->hasPermissionTo('DeleteAny:User') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('DeleteAny:User');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 }
 

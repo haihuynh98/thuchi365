@@ -9,26 +9,66 @@ class EmployeePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('ViewAny:Employee') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('ViewAny:Employee');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     public function view(User $user, Employee $employee): bool
     {
-        return $user->hasPermissionTo('View:Employee') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('View:Employee');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('Create:Employee') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('Create:Employee');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     public function update(User $user, Employee $employee): bool
     {
-        return $user->hasPermissionTo('Update:Employee') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('Update:Employee');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 
     public function delete(User $user, Employee $employee): bool
     {
-        return $user->hasPermissionTo('Delete:Employee') || $user->hasRole('admin');
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        
+        try {
+            return $user->hasPermissionTo('Delete:Employee');
+        } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
+            return false;
+        }
     }
 }
