@@ -15,6 +15,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseByDateStats extends Page implements HasTable, HasForms
 {
@@ -152,5 +153,27 @@ class ExpenseByDateStats extends Page implements HasTable, HasForms
 
         return Expense::whereBetween('recorded_at', [$startOfMonth, $endOfMonth])
             ->sum('amount');
+    }
+
+    public static function canAccess(): bool
+    {
+        $user = Auth::user();
+        
+        if (!$user instanceof \App\Models\User) {
+            return false;
+        }
+        
+        return $user->hasPermissionTo('View:ExpenseByDateStats') || $user->hasRole('admin');
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = Auth::user();
+        
+        if (!$user instanceof \App\Models\User) {
+            return false;
+        }
+        
+        return $user->hasPermissionTo('View:ExpenseByDateStats') || $user->hasRole('admin');
     }
 }

@@ -55,4 +55,9 @@ class ExpenseResource extends Resource
             'edit' => EditExpense::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->hasPermissionTo('ViewAny:Expense') || auth()->user()?->hasRole('admin');
+    }
 }

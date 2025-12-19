@@ -9,26 +9,26 @@ class EmployeePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasPermissionTo('ViewAny:Employee') || $user->hasRole('admin');
     }
 
     public function view(User $user, Employee $employee): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasPermissionTo('View:Employee') || $user->hasRole('admin');
     }
 
     public function create(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasPermissionTo('Create:Employee') || $user->hasRole('admin');
     }
 
     public function update(User $user, Employee $employee): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasPermissionTo('Update:Employee') || $user->hasRole('admin');
     }
 
     public function delete(User $user, Employee $employee): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasPermissionTo('Delete:Employee') || $user->hasRole('admin');
     }
 }

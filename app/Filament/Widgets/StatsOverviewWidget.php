@@ -8,9 +8,21 @@ use App\Models\Income;
 use Filament\Widgets\StatsOverviewWidget as BaseStatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class StatsOverviewWidget extends BaseStatsOverviewWidget
 {
+    public static function canView(): bool
+    {
+        $user = Auth::user();
+        
+        if (!$user instanceof \App\Models\User) {
+            return false;
+        }
+        
+        return $user->hasPermissionTo('View:StatsOverviewWidget') || $user->hasRole('admin');
+    }
+
     protected function getStats(): array
     {
         $today = Carbon::today();

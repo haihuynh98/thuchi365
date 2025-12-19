@@ -19,7 +19,7 @@ class UsersTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
-                    ->label('Email')
+                    ->label('Tên đăng nhập')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('roles.name')
@@ -32,11 +32,6 @@ class UsersTable
                         default => 'gray',
                     })
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->label('Xác thực email')
-                    ->dateTime('d/m/Y H:i:s')
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->label('Ngày tạo')
                     ->dateTime('d/m/Y H:i:s')

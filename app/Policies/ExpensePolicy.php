@@ -9,23 +9,27 @@ class ExpensePolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasPermissionTo('ViewAny:Expense') || $user->hasRole('admin');
     }
 
     public function view(User $user, Expense $expense): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasPermissionTo('View:Expense') || $user->hasRole('admin');
     }
 
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasPermissionTo('Create:Expense') || $user->hasRole('admin');
     }
 
     public function update(User $user, Expense $expense): bool
     {
         if ($user->hasRole('admin')) {
             return true;
+        }
+        
+        if (!$user->hasPermissionTo('Update:Expense')) {
+            return false;
         }
         
         if ($user->hasRole('manager')) {
@@ -40,6 +44,10 @@ class ExpensePolicy
     {
         if ($user->hasRole('admin')) {
             return true;
+        }
+        
+        if (!$user->hasPermissionTo('Delete:Expense')) {
+            return false;
         }
         
         if ($user->hasRole('manager')) {

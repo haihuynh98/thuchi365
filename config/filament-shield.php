@@ -65,7 +65,7 @@ return [
     */
 
     'super_admin' => [
-        'enabled' => false, // Tắt super_admin để tránh 403
+        'enabled' => true,
         'name' => 'super_admin',
         'define_via_gate' => false,
         'intercept_gate' => 'before',
@@ -193,7 +193,7 @@ return [
         'subject' => 'class',
         'prefix' => 'view',
         'exclude' => [
-            'Dashboard',
+            \Filament\Pages\Dashboard::class,
         ],
     ],
 

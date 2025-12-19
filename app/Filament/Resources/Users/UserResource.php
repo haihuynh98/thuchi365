@@ -30,6 +30,18 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+        ];
+    }
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);
@@ -54,5 +66,10 @@ class UserResource extends Resource
             'create' => CreateUser::route('/create'),
             'edit' => EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->hasPermissionTo('ViewAny:User') || auth()->user()?->hasRole('admin');
     }
 }

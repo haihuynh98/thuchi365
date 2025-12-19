@@ -16,6 +16,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class IncomeByEmployeeStats extends Page implements HasTable, HasForms
 {
@@ -158,5 +159,27 @@ class IncomeByEmployeeStats extends Page implements HasTable, HasForms
             ->whereBetween('recorded_at', [$start, $end])
             ->get()
             ->sum(fn ($income) => $income->total);
+    }
+
+    public static function canAccess(): bool
+    {
+        $user = Auth::user();
+        
+        if (!$user instanceof \App\Models\User) {
+            return false;
+        }
+        
+        return $user->hasPermissionTo('View:IncomeByEmployeeStats') || $user->hasRole('admin');
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = Auth::user();
+        
+        if (!$user instanceof \App\Models\User) {
+            return false;
+        }
+        
+        return $user->hasPermissionTo('View:IncomeByEmployeeStats') || $user->hasRole('admin');
     }
 }

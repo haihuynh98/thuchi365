@@ -5,11 +5,13 @@ namespace App\Providers;
 use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\Income;
+use App\Models\User;
 use App\Observers\ExpenseObserver;
 use App\Observers\IncomeObserver;
 use App\Policies\EmployeePolicy;
 use App\Policies\ExpensePolicy;
 use App\Policies\IncomePolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Employee::class, EmployeePolicy::class);
         Gate::policy(Income::class, IncomePolicy::class);
         Gate::policy(Expense::class, ExpensePolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
 
         // Register observers
         Income::observe(IncomeObserver::class);

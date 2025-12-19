@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
-use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -21,8 +21,7 @@ class UserForm
                             ->required()
                             ->maxLength(255),
                         TextInput::make('email')
-                            ->label('Email')
-                            ->email()
+                            ->label('Tên đăng nhập')
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
@@ -38,16 +37,16 @@ class UserForm
                     ->columns(2),
                 Section::make('Phân quyền')
                     ->schema([
-                        CheckboxList::make('roles')
+                        Select::make('role')
                             ->label('Vai trò')
-                            ->relationship('roles', 'name', fn ($query) => $query->whereNotIn('name', ['employee']))
-                            ->options(Role::whereNotIn('name', ['employee'])->pluck('name', 'id'))
-                            ->descriptions(
-                                Role::whereNotIn('name', ['employee'])->get()->mapWithKeys(fn ($role) => [
-                                    $role->id => $role->name === 'admin' ? 'Toàn quyền' : 'Quản lý'
-                                ])
-                            )
-                            ->columns(2)
+                            ->relationship('roles', 'name', fn ($query) => $query->whereNotIn('name', ['admin', 'employee']))
+                            ->options(fn () => Role::whereNotIn('name', ['admin', 'employee'])->get()->mapWithKeys(fn ($role) => [
+                                $role->id => match ($role->name) {
+                                    'manager' => 'Quản lý',
+                                    default => $role->name,
+                                }
+                            ]))
+                            ->required()
                             ->columnSpanFull(),
                     ]),
             ]);

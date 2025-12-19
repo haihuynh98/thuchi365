@@ -55,4 +55,9 @@ class IncomeResource extends Resource
             'edit' => EditIncome::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->hasPermissionTo('ViewAny:Income') || auth()->user()?->hasRole('admin');
+    }
 }

@@ -55,4 +55,9 @@ class EmployeeResource extends Resource
             'edit' => EditEmployee::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->hasPermissionTo('ViewAny:Employee') || auth()->user()?->hasRole('admin');
+    }
 }
