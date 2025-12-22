@@ -42,7 +42,7 @@ class TelegramService
                 $employee = $group->first()->employee;
                 $total = $group->sum(fn ($income) => $income->total);
                 return [
-                    'name' => $employee->name ?? 'N/A',
+                    'employee_id' => $employee->employee_id ?? 'N/A',
                     'total' => $total,
                 ];
             })
@@ -66,7 +66,7 @@ class TelegramService
         if ($breakdownByEmployee->isNotEmpty()) {
             $message .= "👥 Theo nhân viên:\n";
             foreach ($breakdownByEmployee as $item) {
-                $message .= "- {$item['name']}: " . number_format($item['total'], 0, ',', '.') . " ₫\n";
+                $message .= "- {$item['employee_id']}: " . number_format($item['total'], 0, ',', '.') . " ₫\n";
             }
         } else {
             $message .= "👥 Theo nhân viên: Không có dữ liệu\n";

@@ -47,7 +47,8 @@ class ExpenseForm
                     ->default(now())
                     ->required()
                     ->native(false)
-                    ->displayFormat('d/m/Y'),
+                    ->displayFormat('d/m/Y')
+                    ->hiddenOn(['create']),
             ]);
     }
 }

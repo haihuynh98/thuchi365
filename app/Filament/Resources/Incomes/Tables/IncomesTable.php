@@ -17,7 +17,7 @@ class IncomesTable
     {
         return $table
             ->columns([
-                TextColumn::make('employee.name')
+                TextColumn::make('employee.employee_id')
                     ->label('Nhân viên')
                     ->searchable()
                     ->sortable(),
@@ -76,7 +76,7 @@ class IncomesTable
             ->filters([
                 SelectFilter::make('employee_id')
                     ->label('Nhân viên')
-                    ->relationship('employee', 'name')
+                    ->relationship('employee', 'employee_id')
                     ->searchable()
                     ->preload(),
             ])

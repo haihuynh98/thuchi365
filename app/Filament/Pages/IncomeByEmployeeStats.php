@@ -77,7 +77,7 @@ class IncomeByEmployeeStats extends Page implements HasTable, HasForms
         return $table
             ->query($this->getTableQuery())
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('employee_id')
                     ->label('Nhân viên')
                     ->searchable(),
                 TextColumn::make('daily_total')

@@ -19,7 +19,7 @@ class IncomeForm
             ->components([
                 Select::make('employee_id')
                     ->label('Nhân viên')
-                    ->relationship('employee', 'name', fn (Builder $query) => $query->where('status', 'active'))
+                    ->relationship('employee', 'employee_id', fn (Builder $query) => $query->where('status', 'active'))
                     ->required()
                     ->searchable()
                     ->preload(),
@@ -152,7 +152,8 @@ class IncomeForm
                     ->default(now())
                     ->required()
                     ->native(false)
-                    ->displayFormat('d/m/Y'),
+                    ->displayFormat('d/m/Y')
+                    ->hiddenOn(['create']),
             ]);
     }
 }
