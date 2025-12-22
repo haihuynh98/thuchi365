@@ -42,7 +42,9 @@ class ShieldSeeder extends Seeder
             // Pages
             'view_dashboard',
             'view_income_by_employee_stats',
+            'View:IncomeByEmployeeStats',
             'view_expense_by_date_stats',
+            'View:TipByEmployeeStats',
             
             // Widgets
             'view_stats_overview_widget',
@@ -64,7 +66,9 @@ class ShieldSeeder extends Seeder
             'update_expense',
             'view_dashboard',
             'view_income_by_employee_stats',
+            'View:IncomeByEmployeeStats',
             'view_expense_by_date_stats',
+            'View:TipByEmployeeStats',
             'view_stats_overview_widget',
         ]);
 
@@ -73,6 +77,8 @@ class ShieldSeeder extends Seeder
             'create_income',
             'view_dashboard',
             'view_income_by_employee_stats',
+            'View:IncomeByEmployeeStats',
+            'View:TipByEmployeeStats',
             'view_stats_overview_widget',
         ]);
 

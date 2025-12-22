@@ -23,16 +23,12 @@ class IncomesTable
                     ->sortable(),
                 TextColumn::make('revenue')
                     ->label('Doanh thu (vé)')
-                    ->sortable()
-                    ->state(function ($record) {
-                        $base = (float) ($record->revenue ?? 0);
-                        $withBonus = $base * 1.1;
-
-                        $baseFormatted = number_format($base, 0, ',', '.');
-                        $withBonusFormatted = number_format($withBonus, 0, ',', '.');
-
-                        return "{$withBonusFormatted} ({$baseFormatted})";
-                    }),
+                    ->money('VND')
+                    ->sortable(),
+                TextColumn::make('tip')
+                    ->label('Tip')
+                    ->money('VND')
+                    ->sortable(),
                 TextColumn::make('penalty')
                     ->label('Phạt')
                     ->money('VND')

@@ -52,8 +52,9 @@ class Income extends Model
     public function getTotalAttribute(): float
     {
         $revenue = (float) $this->revenue;
+        $tip = (float) $this->tip;
 
-        // Tổng thu = Doanh thu + 10% + Phạt + CSVC
-        return ($revenue * 1.1) + (float) $this->penalty + (float) $this->facility;
+        // Tổng thu = Doanh thu + Tip + Phạt + CSVC
+        return $revenue + $tip + (float) $this->penalty + (float) $this->facility;
     }
 }

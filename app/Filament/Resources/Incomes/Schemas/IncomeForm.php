@@ -56,6 +56,29 @@ class IncomeForm
                     //     }
                     // })
                     ->rules(['regex:/^[\d.,]+$/']),
+                TextInput::make('tip')
+                    ->label('Tiền Tip')
+                    ->default(0)
+                    ->required()
+                    ->prefix('₫')
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters('.,')
+                    ->formatStateUsing(function ($state) {
+                        if ($state === null || $state === '') {
+                            return null;
+                        }
+
+                        $value = (float) $state;
+
+                        return (string) (int) round($value);
+                    })
+                    ->dehydrateStateUsing(function ($state) {
+                        if (empty($state)) return 0;
+                        $cleaned = preg_replace('/[^0-9]/', '', (string) $state);
+                        return $cleaned ? (float) $cleaned : 0;
+                    })
+                    ->live(onBlur: true)
+                    ->rules(['regex:/^[\d.,]+$/']),
                 TextInput::make('penalty')
                     ->label('Tiền phạt')
                     ->default(0)
